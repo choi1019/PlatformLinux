@@ -29,7 +29,8 @@ public:
 		eFinalizeComponents,
 		eStopComponents,
 		eStopSchedulers,
-		eFinalizeSchedulers,		
+		eFinalizeSchedulers,	
+		eDeleteComponents,	
 		eEnd
 	};
 

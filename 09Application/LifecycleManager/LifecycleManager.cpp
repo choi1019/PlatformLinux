@@ -77,14 +77,12 @@ void LifecycleManager::RegisterAScheduler(int name, Scheduler* pScheduler) {
 void LifecycleManager::RegisterSystemSchedulers() {
 	this->RegisterAScheduler((int)ILifecycleManager::EReceivers::eMainScheduler, m_pMainScheduler);
 }
-// Register Schedulers
 void LifecycleManager::RegisterSchedulers(Event* pEvent) {
 	LOG_HEADER("LifecycleManager::RegisterSchedulers");
 	this->RegisterSystemSchedulers();
 	this->RegisterUserShedulers();
 	LOG_FOOTER("LifecycleManager::RegisterSchedulers");
 }
-// Initialize Schedulers
 void LifecycleManager::InitializeSchedulers(Event* pEvent) {
 	LOG_HEADER("LifecycleManager::InitializeSchedulers");
 	for (auto itr : m_mapSchedulers) {
@@ -93,8 +91,6 @@ void LifecycleManager::InitializeSchedulers(Event* pEvent) {
 	}
 	LOG_FOOTER("LifecycleManager::InitializeSchedulers");
 }
-
-// Start Schedulers
 void LifecycleManager::StartSchedulers(Event* pEvent) {
 	if (pEvent->IsReply()) {
 		LOG_NEWLINE("- StartSchedulers -", Directory::s_dirComponents[pEvent->GetUIdSource().GetComponentId()]);
@@ -415,10 +411,22 @@ void LifecycleManager::FinalizeSchedulers(Event* pEvent) {
 	LOG_HEADER("LifecycleManager::FinalizeSchedulers");
 	for (auto itr : m_mapSchedulers) {
 		itr.second->FinalizeAsAScheduler();
-		LOG_NEWLINE("- StopSchedulers: ", 
+		LOG_NEWLINE("- FinalizeSchedulers: ", 
 			Directory::s_dirComponents[itr.second->GetComponentId()]);
 	}
 	LOG_FOOTER("LifecycleManager::FinalizeSchedulers");
+}
+
+void LifecycleManager::DeleteComponents(Event* pEvent) {
+	LOG_HEADER("LifecycleManager::DeleteComponents");
+	for (auto itr : m_mapComponents) {
+		if (itr.second != this->m_pMainScheduler && itr.second != this) {
+			LOG_NEWLINE("- DeleteComponents: ", 
+					Directory::s_dirComponents[itr.second->GetComponentId()]);
+			delete itr.second;
+		}
+	}
+	LOG_FOOTER("LifecycleManager::DeleteComponents");
 }
 
 void LifecycleManager::FinalizeAsALifecycleManager(Event* pEvent) {
@@ -434,6 +442,9 @@ void LifecycleManager::FinalizeAsALifecycleManager(Event* pEvent) {
 			this->SendReplyEvent(this->GetUId(), (int)ILifecycleManager::EEventType::eFinalizeSchedulers);
 			break;
 		case (int)ILifecycleManager::EEventType::eFinalizeSchedulers:
+			this->SendReplyEvent(this->GetUId(), (int)ILifecycleManager::EEventType::eDeleteComponents);
+			break;
+		case (int)ILifecycleManager::EEventType::eDeleteComponents:
 			LOG_FOOTER("LifecycleManager::FinalizeAsALifecycleManager");
 			break;
 		default:
@@ -484,6 +495,8 @@ void LifecycleManager::ProcessAEvent(Event* pEvent) {
 		this->StopSchedulers(pEvent); break;
 	case (int)ILifecycleManager::EEventType::eFinalizeSchedulers:
 		this->FinalizeSchedulers(pEvent); break;
+	case (int)ILifecycleManager::EEventType::eDeleteComponents:
+		this->DeleteComponents(pEvent); break;
 	default:
 		Component::ProcessAEvent(pEvent); break;
 	}
