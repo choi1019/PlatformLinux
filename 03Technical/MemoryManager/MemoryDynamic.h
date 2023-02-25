@@ -30,7 +30,7 @@ protected:
 	virtual void UnLock() = 0;
 
 	void* Malloc(size_t szObject, const char* sMessage);
-	bool Free(void* pObject);
+	void* Free(void* pObject);
 
 public:
 	// constructors and destructors
@@ -45,7 +45,7 @@ public:
 
 	// methods
 	void* SafeMalloc(size_t szAllocate, const char* sMessage) override;
-	bool SafeFree(void* pObject) override;
+	void* SafeFree(void* pObject) override;
 
 	// maintenance
 	void Show(const char* pTitle) override;

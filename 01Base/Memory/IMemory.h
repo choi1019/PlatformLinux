@@ -24,7 +24,7 @@ public:
 
 	// methods
 	virtual void* SafeMalloc(size_t szAllocate, const char* pcName) = 0;
-	virtual bool SafeFree(void* pPtr) = 0;
+	virtual void* SafeFree(void* pPtr) = 0;
 
 	virtual void Show(const char* pTitle) = 0;
 };

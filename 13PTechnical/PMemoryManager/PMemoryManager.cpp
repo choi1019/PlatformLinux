@@ -50,11 +50,15 @@ void PMemoryManager::Allocate() {
 void PMemoryManager::Delocate() {
     try {
         MLOG_HEADER("PMemoryManager::Delocate");
-
+        
         s_pMemoryDynamic->Finalize();
         SHOW_DYNAMIC("PMemoryDynamic::Delocate");
         delete s_pMemoryDynamic;
 
+        //Event::s_pMemory->Finalize();
+        delete Event::s_pMemory;
+
+        s_pPageList->Finalize();
         delete s_pPageList;
         delete[] s_pApplicationMemeory;
 

@@ -7,7 +7,6 @@
 #include <01Base/Memory/IMemory.h>
 #include <03Technical/MemoryManager/MemoryObject.h>
 #include <03Technical/MemoryManager/PageList.h>
-#include <03Technical/MemoryManager/SlotInfo.h>
 
 class Slot {
 public:
@@ -26,13 +25,12 @@ public:
 	// for recycle
 	static SlotList* s_pSlotListRecycle;
 	static PageList* s_pPageList;
-	// static SlotInfo** s_apSlotInfo;
 
 	void* operator new(size_t szThis, const char* sMessage);
 	void operator delete(void* pObject);
 	void operator delete(void* pObject, const char* sMessage);
 
-private:
+protected:
 	int m_numPagesRequired;
 	int m_idxPage;
 	PageIndex* m_pPageIndex;
@@ -50,11 +48,6 @@ private:
 	SlotList* m_pNext;
 
 protected:
-	SlotInfo *m_pSlotInfoHead;
-
-	virtual void* Malloc(size_t szSlot, const char* sMessage);
-	virtual bool Free(void* pObject);
-
 	virtual void Lock() {};
 	virtual void UnLock() {};
 public:
@@ -73,7 +66,8 @@ public:
 	SlotList* GetPSibling() { return this->m_pSibling; }
 	void SetPSibling(SlotList* pSibling) { this->m_pSibling = pSibling; }
 
-	Slot *AllocateASlot();
+	Slot *GetPSlotHead() { return this->m_pSlotHead; }
+	Slot *AllocateASlot(const char* sMessage);
 	void DelocateASlot(Slot *pSlot);
 
 public:
@@ -89,8 +83,8 @@ public:
 	virtual void Initialize();
 	virtual void Finalize();
 
-	void* SafeMalloc(size_t szAllocate, const char* pcName);
-	bool SafeFree(void* pObject);
+	virtual void* SafeMalloc(size_t szSlot, const char* pcName);
+	virtual void* SafeFree(void* pSlot);
 
 	// maintenance
 	virtual void Show(const char* pTitle);

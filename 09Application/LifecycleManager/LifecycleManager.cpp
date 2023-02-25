@@ -420,8 +420,12 @@ void LifecycleManager::FinalizeSchedulers(Event* pEvent) {
 void LifecycleManager::DeleteComponents(Event* pEvent) {
 	LOG_HEADER("LifecycleManager::DeleteComponents");
 	for (auto itr : m_mapComponents) {
+		MLOG_NEWLINE("- LifecycleManager::DeleteComponents: ", (size_t) itr.second,
+			Directory::s_dirComponents[itr.second->GetComponentId()]);
+	}
+	for (auto itr : m_mapComponents) {
 		if (itr.second != this->m_pMainScheduler && itr.second != this) {
-			LOG_NEWLINE("- DeleteComponents: ", 
+			MLOG_NEWLINE("- LifecycleManager::DeleteComponents: ", 
 					Directory::s_dirComponents[itr.second->GetComponentId()]);
 			delete itr.second;
 		}

@@ -22,17 +22,9 @@ Component::Component(unsigned uClassId, const char* sClassName)
 	this->RegisterExceptions();
 }
 Component::~Component() {
-	for (MapPair<int, ComponentPart*> itrComponentPart: m_mComponentParts) {
-		delete itrComponentPart.second;
-	}
-	delete this->GetPUId();
-	delete this->GetPMReceivers();
-	// delete target group vectors
-	for (auto itr : *this->GetPMTargetsGroups()) {
-		delete itr.second;
-	}
-	delete this->GetPMTargetsGroups();
-	// LOG
+	//delete this->GetPUId();
+	//delete this->GetPMReceivers();
+	//delete this->GetPMTargetsGroups();
 }
 
 void Component::RegisterEventTypes() {

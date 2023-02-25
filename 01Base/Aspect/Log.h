@@ -187,8 +187,8 @@ public:
 #endif
 
 #if _DEBUG_MSTATIC
-	#define NEW_STATIC(MEMORYNAME, ADDRESS, ...) Log("-STATIC::NEW: ", MEMORYNAME, (size_t)ADDRESS, ##__VA_ARGS__).Println()
-	#define DELETE_STATIC(POBJECT, ...) Log("-Static::DELETE: ", (size_t)POBJECT, ##__VA_ARGS__).Println()
+	#define NEW_STATIC(MEMORYNAME, ADDRESS, ...) Log("-SNEW: ", MEMORYNAME, (size_t)ADDRESS, ##__VA_ARGS__).Println()
+	#define DELETE_STATIC(POBJECT, ...) Log("-SDELETE: ", (size_t)POBJECT, ##__VA_ARGS__).Println()
 	#define SHOW_STATIC(MESSAGE) BaseObject::s_pMemory->Show(MESSAGE)
 #else
 	#define NEW_STATIC(MEMORYNAME, ADDRESS, ...)
@@ -196,10 +196,10 @@ public:
 	#define SHOW_STATIC(MESSAGE)
 #endif
 #if _DEBUG_MDYNAMIC
-	#define NEW_DYNAMIC(MEMORYNAME, ADDRESS, ...) Log("-DYNAMIC::NEW: ", MEMORYNAME, (size_t)ADDRESS, ##__VA_ARGS__).Println();
+	#define NEW_DYNAMIC(MEMORYNAME, ADDRESS, ...) Log("*DNEW: ", MEMORYNAME, (size_t)ADDRESS, ##__VA_ARGS__).Println();
 //		this->m_mapLogs[(size_t)ADDRESS] = new("MemoryLog") MemoryLog(MEMORYNAME)
 
-	#define DELETE_DYNAMIC(POBJECT, IDXPAGE, ...) Log("-DYNAMIC:DELETE: ", (size_t)POBJECT, IDXPAGE, ##__VA_ARGS__).Println();
+	#define DELETE_DYNAMIC(POBJECT, IDXPAGE, ...) Log("*DDELETE: ", (size_t)POBJECT, IDXPAGE, ##__VA_ARGS__).Println();
 //		this->m_mapLogs[(size_t)POBJECT]->SetBAllocated(false)
 
 	#define SHOW_DYNAMIC(MESSAGE) ValueObject::s_pMemory->Show(MESSAGE)

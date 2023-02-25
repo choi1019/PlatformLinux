@@ -55,9 +55,9 @@ void* MemoryStatic::Malloc(size_t szObject, const char* sMessage) {
     NEW_STATIC(sMessage, pMemoryAllocated, "(szObject, s_szCurrent, s_szAllocated)", szObject, s_szCurrent, s_szAllocated);
     return pMemoryAllocated;
 }
-bool MemoryStatic::Free(void* pObject) {
+void* MemoryStatic::Free(void* pObject) {
     DELETE_STATIC(pObject);
-    return true;
+    return nullptr;
 }
 
 void* MemoryStatic::SafeMalloc(size_t szAllocate, const char* sMessage)
@@ -68,9 +68,9 @@ void* MemoryStatic::SafeMalloc(size_t szAllocate, const char* sMessage)
     return pMemoryAllocated;
 }
 
-bool MemoryStatic::SafeFree(void* pObject) {
+void* MemoryStatic::SafeFree(void* pObject) {
     Lock();
-    bool result = this->Free(pObject);
+    void* result = this->Free(pObject);
     UnLock();
     return result;
 }

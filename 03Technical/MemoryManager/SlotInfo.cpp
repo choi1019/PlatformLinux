@@ -5,11 +5,11 @@
 IMemory* SlotInfo::s_pMemory = nullptr;
 
 void* SlotInfo::operator new (size_t szThis, const char* sMessage) {
-    void* pAllocated = SlotInfo::s_pMemory->SafeMalloc(szThis, sMessage);
+    void* pAllocated = ((SlotList*)(SlotInfo::s_pMemory))->SafeMalloc(szThis, sMessage);
     return pAllocated;
 }
 void SlotInfo::operator delete(void* pObject) {
-    SlotInfo::s_pMemory->SafeFree(pObject);
+    ((SlotList*)(SlotInfo::s_pMemory))->SafeFree(pObject);
 }
 // dummy
 void SlotInfo::operator delete(void* pObject, const char* sMessage) {
@@ -24,8 +24,13 @@ SlotInfo::SlotInfo(Slot *pSlot, const char *sMessage, SlotList *pSlotList,
     , m_pNext(nullptr)
 {
     strcpy(m_sMessage, sMessage);
+    int length = strlen(sMessage);
+    m_sMessage[length] = '\0';
+    NEW_DYNAMIC("SlotInfo::new", (size_t)this, m_sMessage);
 }
-SlotInfo::~SlotInfo() {}
+SlotInfo::~SlotInfo() {
+    MLOG_NEWLINE("SlotInfo::delete", (size_t)this, m_sMessage);
+}
 void SlotInfo::Initialize() {
     RootObject::Initialize();
 }

@@ -83,23 +83,23 @@ void* MemoryDynamic::Malloc(size_t szObject, const char* sMessage) {
     throw Exception((unsigned)IMemory::EException::_eSlotlistAllocationFailed, " MemoryDynamic::Malloc", __LINE__);
 }
 
-bool MemoryDynamic::Free(void* pObject) {
+void* MemoryDynamic::Free(void* pObject) {
     MemoryEven *pPrevious = m_pMemoryEvenHead; 
     MemoryEven *pCurrent = (MemoryEven *)pPrevious->GetPNext(); 
     while (pCurrent != nullptr) {
-        bool bFreed = pCurrent->SafeFree(pObject);
-        if (bFreed) {
+        void* pSlotList = pCurrent->SafeFree(pObject);
+        if (pSlotList != nullptr) {
             // delete size head?
             if (pCurrent->GetCountSlotLists() == 0) {
                 pPrevious->SetPNext(pCurrent->GetPNext());
                 delete pCurrent;
             }
-            return true;
+            return pCurrent;
         }
         pCurrent = (MemoryEven *)pCurrent->GetPNext();
     }
     throw Exception((unsigned)IMemory::EException::_eSlotlistFreeFailed, "MemoryDynamic::Free", __LINE__);
-    return false;
+    return nullptr;
 }
 
 void* MemoryDynamic::SafeMalloc(size_t szAllocate, const char* pcName)
@@ -109,9 +109,9 @@ void* MemoryDynamic::SafeMalloc(size_t szAllocate, const char* pcName)
     UnLock();
     return pMemoryAllocated;
 }
-bool MemoryDynamic::SafeFree(void* pObject) {
+void* MemoryDynamic::SafeFree(void* pObject) {
     Lock();
-    bool result = this->Free(pObject);
+    void* result = this->Free(pObject);
     UnLock();
     return result;
 }
@@ -122,9 +122,9 @@ void MemoryDynamic::Show(const char* pTitle) {
     s_pPageList->Show("MemoryDynamic::Show");
     MemoryEven* pMemoryEven = this->m_pMemoryEvenHead;
     while (pMemoryEven != nullptr) {
-        pMemoryEven->Show("Head");
+        pMemoryEven->Show("Slot Head");
         pMemoryEven = (MemoryEven *)pMemoryEven->GetPNext();
     }
-    SlotInfo::s_pMemory->Show("SlotInfo");
+    SlotInfo::s_pMemory->Show("SlotInfo Head ");
     MLOG_FOOTER("MemoryDynamic::Show");
 };

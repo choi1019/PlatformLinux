@@ -9,10 +9,13 @@
 
 class MemoryEven : public SlotList {
 private:
+	SlotInfo *m_pSlotInfoHead;
+
 	void AddSlotInfo(Slot *pSlot, const char *sMessage);
 	void DeleteSlotInfo(Slot *pSlot);
 	SlotInfo *GetPSlotInfo(Slot *pSlot);
-
+public:
+	SlotInfo *GetPSlotInfoHead() { return this->m_pSlotInfoHead; }
 protected:
 	// critical section
 	virtual void Lock() {};
@@ -30,9 +33,9 @@ public:
 	virtual ~MemoryEven();
 	virtual void Initialize();
 	virtual void Finalize();
-	
-	void* SafeMalloc(size_t szAllocate, const char* pcName);
-	bool SafeFree(void* pObject);
+
+	void* SafeMalloc(size_t szAllocate, const char* sMessage) override;
+	void* SafeFree(void *pObject) override;
 
 	// maintenance
 	virtual void Show(const char* pTitle);
