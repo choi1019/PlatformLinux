@@ -83,14 +83,15 @@ void PLifecycleManager::InitializeComponents(Event *pEvent) {
 }
 void PLifecycleManager::StartSystem(Event *pEvent) {
 	if (pEvent->IsReply()) {
-		if (pEvent->GetReplyType() == (int)IPSkeleton::EEventType::eStart) {
-			this->SendReplyEvent((int)EComponents::eVideoManager, (int)IVideoManager::EEventType::eStart);
-		} else {
+		// if (pEvent->GetReplyType() == (int)IPSkeleton::EEventType::eStart) {
+
+		// } else {
 			LOG_FOOTER(" PLifecycleManager::StartSystem");
-		}
+		// }
 	} else {
 		LOG_HEADER(" PLifecycleManager::StartSystem");
-		this->SendReplyEvent((int)EComponents::ePSkeleton, (int)IPSkeleton::EEventType::eStart);
+		this->SendNoReplyEvent((int)EComponents::ePSkeleton, (int)IPSkeleton::EEventType::eStart);
+		this->SendReplyEvent((int)EComponents::eVideoManager, (int)IVideoManager::EEventType::eStart);
 	}
 //	this->SendReplyEvent((int)EComponents::eStub, (int)IComponent::EEventType::eStart);
 	// this->SendReplyEvent((int)EComponents::eTimerLinux, (int)IComponent::EEventType::eStart);

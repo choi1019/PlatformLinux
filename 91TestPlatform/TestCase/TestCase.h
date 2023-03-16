@@ -46,7 +46,7 @@ public:
 		TESTLOG_HEADER(this->GetClassName(), "Finalize", "Start");
 	}
 	void AfterFinalize() {
-    	TESTLOG_FOOTER(this->GetClassName(), "Finalize", "End")
+    	TESTLOG_FOOTER(this->GetClassName(), "Finalize", "End\n")
 	}
 
 protected:

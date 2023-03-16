@@ -98,6 +98,10 @@ public:
 			this->Start(pEvent);
 			//this->Stop(pEvent);
 			break;
+        case (int)IPSkeleton::EEventType::eStop:
+			this->Stop(pEvent);
+			//this->Stop(pEvent);
+			break;
 		default:
 			PScheduler::ProcessAEvent(pEvent);
 			break;

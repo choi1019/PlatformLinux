@@ -70,6 +70,9 @@ protected:
 		case (unsigned)IVideoProviderManager::EEventType::eRegister:
 			this->Register(pEvent);
 			break;
+		case (unsigned)IVideoProviderManager::EEventType::eStart:
+			this->Start(pEvent);
+			break;
 		default:
 			Component::ProcessAEvent(pEvent);
 			break;

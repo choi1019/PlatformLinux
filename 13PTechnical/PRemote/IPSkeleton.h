@@ -21,6 +21,7 @@ enum class EException {
 		eBegin = _PSkeleton_Id,
 		eInitialize,
 		eStart,
+		eStop,
 		eEnd
 	};
 
