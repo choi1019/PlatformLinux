@@ -70,7 +70,7 @@ void PLifecycleManager::AssociateUserSourcesNTargets() {
 void PLifecycleManager::InitializeComponents(Event *pEvent) {
 	if (pEvent->IsReply()) {
 		if (pEvent->GetReplyType() == (int)IPSkeleton::EEventType::eInitialize) {
-			this->SendReplyEvent((int)EComponents::eVideoManager, (int)IVideoManager::EEventType::eRegister);
+			this->SendReplyEvent((int)EComponents::eVideoManager, (int)IVideoManager::EEventType::eInitialize);
 		} else {
 			LOG_FOOTER(" PLifecycleManager::InitializeComponents");
 		}

@@ -27,7 +27,7 @@ public:
 	// event type
 	enum class EEventType {
 		eBegin = _VideoManager_Id,
-		eRegister,
+		eInitialize,
 		eStart,
 		eEnd
 	};

@@ -17,7 +17,7 @@ enum class EException {
 
 	enum class EEventType {
 		eBegin = _PStub_Id,
-		eRegister,
+		eInitialize,
 		eSend,
 		eEnd
 	};

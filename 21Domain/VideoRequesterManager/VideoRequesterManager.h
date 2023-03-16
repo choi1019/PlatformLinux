@@ -19,37 +19,23 @@ protected:
 	virtual void RegisterExceptions() {
 	}
 
-	// void Initialize() {
-	// 	Component::Initialize();
-	// }
-	// void Finalize() {
-	// 	Component::Finalize();
-	// }
+	void Initialize(Event* pEvent) {
+		LOG_HEADER("VideoRequesterManage::Register");
+		LOG_FOOTER("VideoRequesterManage::Register");
+	}
 
 	void Start(Event* pEvent) {
 		LOG_HEADER("VideoRequesterManage::Start");
 		LOG_FOOTER("VideoRequesterManage::Start");
 	}
-	
-	void Register(Event* pEvent) {
-		LOG_HEADER("VideoRequesterManage::Register");
-		LOG_FOOTER("VideoRequesterManage::Register");
-		// if (pEvent->IsReply()) {
-		// 	LOG_FOOTER("VideoRequesterManage::Register");
-		// }
-		// else {
-		// 	LOG_HEADER("VideoRequesterManage::Register");
-		// 	this->SendReplyEvent(this->GetUId(), (int)IComponent::EEventType::eStart);
-		// }
-	}
 
 	void ProcessAEvent(Event* pEvent) {
 		switch (pEvent->GetType()) {
-		case (unsigned)IVideoRequesterManager::EEventType::eRegister:
-			this->Register(pEvent);
+		case (unsigned)IVideoRequesterManager::EEventType::eInitialize:
+			this->Initialize(pEvent);
 			break;
 		case (unsigned)IVideoRequesterManager::EEventType::eStart:
-			this->Register(pEvent);
+			this->Start(pEvent);
 			break;
 		default:
 			Component::ProcessAEvent(pEvent);

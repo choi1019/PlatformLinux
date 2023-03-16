@@ -34,7 +34,7 @@ public:
 	// event type
 	enum class EEventType {
 		eBegin = _VideoProviderManager_Id,
-		eRegister,
+		eInitialize,
 		eStart,
 		eEnd
 	};
